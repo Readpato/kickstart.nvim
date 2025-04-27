@@ -717,8 +717,11 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        'stylua',
         'vue-language-server',
+        'eslint_d',
+        'eslint-lsp',
+        'prettierd',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -754,6 +757,11 @@ require('lazy').setup({
       },
     },
     opts = {
+      formatters = {
+        prettierd = {
+          require_cwd = true,
+        },
+      },
       notify_on_error = false,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
@@ -771,6 +779,27 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        vue = { 'eslint_d' },
+        typescriptreact = { 'prettierd' },
+        javascriptreact = { 'prettierd' },
+        typescript = function(bufnr)
+          if require('conform').get_formatter_info('prettierd', bufnr).available then
+            return { 'prettierd' }
+          else
+            return { 'eslint_d' }
+          end
+        end,
+        javascript = function(bufnr)
+          if require('conform').get_formatter_info('prettierd', bufnr).available then
+            return { 'prettierd' }
+          else
+            return { 'eslint_d' }
+          end
+        end,
+
+        -- json = { 'eslint-lsp', 'prettierd', stop_after_first = true },
+        -- jsonc = { 'eslint-lsp', 'prettierd', stop_after_first = true },
+
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
