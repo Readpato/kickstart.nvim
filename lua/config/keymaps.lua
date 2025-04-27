@@ -1,6 +1,6 @@
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
-
+local wk = require 'which-key'
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -38,6 +38,12 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Jump up a screen down and cent
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+--
+--
+wk.add {
+  -- File Explorer
+  { '<leader>e', '<cmd>Neotree toggle<cr>', desc = 'Toggle File Explorer', mode = 'n' },
+}
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`

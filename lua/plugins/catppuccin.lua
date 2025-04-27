@@ -4,6 +4,7 @@ return {
   name = 'catppuccin',
   priority = 1000,
   opts = {
+    flavour = 'mocha',
     transparent_background = false,
     color_overrides = {
       mocha = {
@@ -12,8 +13,8 @@ return {
         crust = '#000000',
       },
     },
+    integrations = {
+      blink_cmp = true,
+    },
   },
-  config = function()
-    vim.cmd.colorscheme 'catppuccin-mocha'
-  end,
 }
