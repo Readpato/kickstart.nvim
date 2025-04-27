@@ -1,5 +1,6 @@
 return {
   'catppuccin/nvim',
+  lazy = false,
   name = 'catppuccin',
   priority = 1000,
   opts = {
@@ -11,8 +12,8 @@ return {
         crust = '#000000',
       },
     },
-    -- styles = {
-    --   italic = false,
-    -- },
   },
+  config = function()
+    vim.cmd.colorscheme 'catppuccin-mocha'
+  end,
 }
