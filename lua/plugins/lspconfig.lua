@@ -266,9 +266,11 @@ return {
       vim.list_extend(ensure_installed, {
         'eslint-lsp',
         'eslint_d',
+        'json-lsp',
         'prettierd',
         'rust_analyzer',
         'stylua',
+        'tailwindcss-language-server',
         'ts_ls',
         'vue-language-server',
       })

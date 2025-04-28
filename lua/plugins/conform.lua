@@ -17,6 +17,11 @@ return {
       prettierd = {
         require_cwd = true,
       },
+      eslint_d = {
+        format_after_save = {
+          lsp_format = 'fallback',
+        },
+      },
     },
     notify_on_error = false,
     format_on_save = function(bufnr)
@@ -52,9 +57,20 @@ return {
           return { 'eslint_d' }
         end
       end,
-
-      -- json = { 'eslint-lsp', 'prettierd', stop_after_first = true },
-      -- jsonc = { 'eslint-lsp', 'prettierd', stop_after_first = true },
+      json = function(bufnr)
+        if require('conform').get_formatter_info('prettierd', bufnr).available then
+          return { 'prettierd' }
+        else
+          return { 'eslint_d' }
+        end
+      end,
+      jsonc = function(bufnr)
+        if require('conform').get_formatter_info('prettierd', bufnr).available then
+          return { 'prettierd' }
+        else
+          return { 'eslint_d' }
+        end
+      end,
     },
   },
 }
