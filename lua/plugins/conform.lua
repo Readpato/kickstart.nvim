@@ -17,11 +17,9 @@ return {
       prettierd = {
         require_cwd = true,
       },
-      eslint_d = {
-        format_after_save = {
-          lsp_format = 'fallback',
-        },
-      },
+    },
+    format_after_save = {
+      lsp_format = 'fallback',
     },
     notify_on_error = false,
     format_on_save = function(bufnr)
