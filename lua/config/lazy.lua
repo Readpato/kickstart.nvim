@@ -6,7 +6,9 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     error('Error cloning lazy.nvim:\n' .. out)
   end
 end ---@diagnostic disable-next-line: undefined-field
-vim.opt.rtp:prepend(lazypath)
+---@type vim.Option
+local rtp = vim.opt.rtp
+rtp:prepend(lazypath)
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -14,7 +16,7 @@ vim.g.have_nerd_font = true
 
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
 
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
