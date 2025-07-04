@@ -1,0 +1,63 @@
+{
+  "SFC": {
+    "prefix": [
+      "vSFC"
+    ],
+    "body": [
+      "<script setup lang=\"ts\">",
+      "",
+      "</script>",
+      "",
+      "<template>",
+      " <div>",
+      "",
+      " </div>",
+      "</template>",
+      "",
+      "<style scoped>",
+      "",
+      "</style>"
+    ],
+    "description": "Base for Vue Single File Component Script Setup with TypeScript (Composition API)"
+  },
+  "Define Props": {
+    "prefix": [
+      "vdProps"
+    ],
+    "body": [
+      "const {$1} = defineProps<{",
+      " $1: $2",
+      "}>()"
+    ],
+    "description": "Shortcut for defineProps macro"
+  },
+  "Define Emits": {
+    "prefix": [
+      "vdEmits"
+    ],
+    "body": [
+      "const emit = defineEmits<{",
+      "$1: [$2: $3]",
+      "}>()"
+    ],
+    "description": "Shortcut for defineEmits macro"
+  },
+  "DefineModel": {
+    "prefix": [
+      "vdModel"
+    ],
+    "body": [
+      "const $1 = defineModel<$2>('$1')"
+    ],
+    "description": "Shortcut for defineModel macro"
+  },
+  "Computed Property": {
+    "prefix": [
+      "vComputed"
+    ],
+    "body": [
+      "const $1 = computed(() => {return $2})"
+    ],
+    "description": "Shortcut for computed property"
+  }
+}

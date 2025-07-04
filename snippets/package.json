@@ -1,0 +1,13 @@
+{
+  "name": "my-custom-snippets",
+  "version": "1.0.0",
+  "description": "My custom snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "language": ["vue"],
+        "path": "./vue.json"
+      }
+    ]
+  }
+}
