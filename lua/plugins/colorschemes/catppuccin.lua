@@ -6,6 +6,10 @@ return {
   opts = {
     flavour = 'mocha',
     transparent_background = false,
+    no_italic = true,
+    integrations = {
+      blink_cmp = true,
+    },
     -- color_overrides = {
     --   mocha = {
     --     base = '#000000',
@@ -13,8 +17,5 @@ return {
     --     crust = '#000000',
     --   },
     -- },
-    integrations = {
-      blink_cmp = true,
-    },
   },
 }
