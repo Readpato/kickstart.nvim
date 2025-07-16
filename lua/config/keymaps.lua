@@ -7,13 +7,14 @@ wk.add {
     -- Buffers
     { '<leader>b\\', '<cmd>vs<cr>', desc = 'Vertically Split [B]uffer' },
     { '<leader>b|', '<cmd>vs<cr>', desc = 'Horizontally Split [B]uffer' },
+    { '<leader>bc', '<cmd>:bd<cr>', desc = 'Horizontally Split [B]uffer' },
+    { '<leader>bC', '<cmd>:%bd<cr>', desc = 'Horizontally Split [B]uffer' },
 
     -- Diagnostics
-    { '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' } },
+    { '<leader>q', vim.diagnostic.setloclist, desc = 'Open diagnostic [Q]uickfix list' },
 
     -- Miscellaneous
     { '<leader>w', '<cmd>w<cr>', desc = 'Write', hidden = true },
-    { '<leader>q', '<cmd>q<cr>', desc = 'Quit', hidden = true },
 
     -- Search
     { '<Esc>', '<cmd>nohlsearch<CR>' },

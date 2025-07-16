@@ -57,6 +57,9 @@ vim.o.shiftwidth = 2
 -- Preview substitutions live, as you type!
 vim.o.inccommand = 'split'
 
+-- Add border to floating windows
+vim.o.winborder = 'rounded'
+
 -- Show which line your cursor is on
 vim.o.cursorline = true
 

@@ -96,7 +96,8 @@ return {
             return {
               CmpItemMenu = { fg = colors.surface2 },
               CursorLineNr = { fg = colors.text },
-              FloatBorder = { bg = colors.base, fg = colors.surface0 },
+              -- Edited here from original fg = colors.surface0
+              FloatBorder = { bg = colors.base, fg = colors.surface2 },
               GitSignsChange = { fg = colors.peach },
               LineNr = { fg = colors.overlay0 },
               LspInfoBorder = { link = 'FloatBorder' },
