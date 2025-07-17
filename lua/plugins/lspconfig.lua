@@ -205,7 +205,7 @@ return {
         --
         --
         --
-        volar = {
+        vue_ls = {
           on_init = function(client)
             client.handlers['tsserver/request'] = function(_, result, context)
               local clients = vim.lsp.get_clients { bufnr = context.bufnr, name = 'vtsls' }
@@ -218,6 +218,7 @@ return {
               local param = unpack(result)
               local id, command, payload = unpack(param)
               ts_client:exec_cmd({
+                title = 'vue_request_forward',
                 command = 'typescript.tsserverRequest',
                 arguments = {
                   command,
