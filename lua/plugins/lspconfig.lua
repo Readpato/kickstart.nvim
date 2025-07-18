@@ -15,6 +15,7 @@ return {
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
+    event = 'VeryLazy',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
@@ -181,7 +182,7 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       --
-      local vue_language_server_path = vim.fn.stdpath 'data' .. '/mason/packages/vue-language-server/node_modules/@vue/language-server'
+      local vue_language_server_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/@vue/language-server'
       local vue_plugin = {
         name = '@vue/typescript-plugin',
         location = vue_language_server_path,
@@ -205,7 +206,15 @@ return {
         --
         --
         --
+        --
+        -- This is just a workaround for until: https://github.com/mason-org/mason-lspconfig.nvim/pull/588
         vue_ls = {
+          init_options = {
+            typescript = {
+              --     -- tsdk = vim.fn.expand '$MASON/packages' .. '/typescript-language-server' .. '/node_modules/typescript/lib',
+              --     tsdk = ''
+            },
+          },
           on_init = function(client)
             client.handlers['tsserver/request'] = function(_, result, context)
               local clients = vim.lsp.get_clients { bufnr = context.bufnr, name = 'vtsls' }
@@ -275,6 +284,25 @@ return {
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
+      local function config_servers()
+        for server_name, server_config in pairs(servers) do
+          -- Only configure if the server is available in nvim-lspconfig
+          if require('lspconfig')[server_name] then
+            vim.lsp.config(server_name, {
+              -- Merge capabilities with server-specific config
+              capabilities = vim.tbl_deep_extend('force', {}, capabilities, server_config.capabilities or {}),
+              -- Include any other server-specific settings
+              settings = server_config.settings,
+              filetypes = server_config.filetypes,
+              cmd = server_config.cmd,
+              root_dir = server_config.root_dir,
+              init_options = server_config.init_options,
+              -- Add any other configuration options your servers need
+            })
+          end
+        end
+      end
+      config_servers()
       vim.list_extend(ensure_installed, {
         'eslint-lsp',
         'eslint_d',
@@ -289,19 +317,12 @@ return {
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
+        ensure_installed = {}, -- List of servers to automatically install
+        automatic_enable = true, -- Automatically enable installed servers via vim.lsp.enable()
       }
+
+      -- Configure individual servers using vim.lsp.config() instead of handlers
+      -- This replaces the old handlers pattern
     end,
   },
 }
