@@ -18,6 +18,7 @@ return { -- Highlight, edit, and navigate code
       'luadoc',
       'markdown',
       'markdown_inline',
+      'prisma',
       'query',
       'typescript',
       'vim',

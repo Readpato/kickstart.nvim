@@ -16,6 +16,9 @@ return {
     dashboard = {
       example = 'doom',
     },
+    lazygit = {
+      enabled = true,
+    },
   },
   keys = {
     {
@@ -31,6 +34,13 @@ return {
         Snacks.indent.enable()
       end,
       desc = 'Activate indent',
+    },
+    {
+      '<leader>gg',
+      function()
+        Snacks.lazygit()
+      end,
+      desc = 'Toggle lazygit',
     },
   },
 }
