@@ -170,7 +170,7 @@ return {
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
+      -- local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -190,57 +190,7 @@ return {
         configNamespace = 'typescript',
       }
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
-        --
-        --
-        --
-        --
-        --
-        -- This is just a workaround for until: https://github.com/mason-org/mason-lspconfig.nvim/pull/588
-        vue_ls = {
-          init_options = {
-            typescript = {
-              --     -- tsdk = vim.fn.expand '$MASON/packages' .. '/typescript-language-server' .. '/node_modules/typescript/lib',
-              --     tsdk = ''
-            },
-          },
-          on_init = function(client)
-            client.handlers['tsserver/request'] = function(_, result, context)
-              local clients = vim.lsp.get_clients { bufnr = context.bufnr, name = 'vtsls' }
-              if #clients == 0 then
-                vim.notify('Could not found `vtsls` lsp client, vue_lsp would not work without it.', vim.log.levels.ERROR)
-                return
-              end
-              local ts_client = clients[1]
-
-              local param = unpack(result)
-              local id, command, payload = unpack(param)
-              ts_client:exec_cmd({
-                title = 'vue_request_forward',
-                command = 'typescript.tsserverRequest',
-                arguments = {
-                  command,
-                  payload,
-                },
-              }, { bufnr = context.bufnr }, function(_, r)
-                local response_data = { { id, r.body } }
-                ---@diagnostic disable-next-line: param-type-mismatch
-                client:notify('tsserver/response', response_data)
-              end)
-            end
-          end,
-        },
+        vue_ls = {},
         vtsls = {
           settings = {
             vtsls = {
@@ -269,6 +219,11 @@ return {
           },
         },
       }
+      ---@type MasonLspconfigSettings
+      ---@diagnostic disable-next-line: missing-fields
+      require('mason-lspconfig').setup {
+        automatic_enable = vim.tbl_keys(servers or {}),
+      }
 
       -- Ensure the servers and tools above are installed
       --
@@ -282,47 +237,24 @@ return {
       -- `dependencies` table for `nvim-lspconfig` above.
       --
       -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
-      local function config_servers()
-        for server_name, server_config in pairs(servers) do
-          -- Only configure if the server is available in nvim-lspconfig
-          if require('lspconfig')[server_name] then
-            vim.lsp.config(server_name, {
-              -- Merge capabilities with server-specific config
-              capabilities = vim.tbl_deep_extend('force', {}, capabilities, server_config.capabilities or {}),
-              -- Include any other server-specific settings
-              settings = server_config.settings,
-              filetypes = server_config.filetypes,
-              cmd = server_config.cmd,
-              root_dir = server_config.root_dir,
-              init_options = server_config.init_options,
-              -- Add any other configuration options your servers need
-            })
-          end
-        end
-      end
-      config_servers()
       vim.list_extend(ensure_installed, {
+        'lua_ls',
         'eslint-lsp',
         'eslint_d',
         'json-lsp',
         'prettierd',
         'rust_analyzer',
         'stylua',
-        'tailwindcss-language-server',
+        'tailwindcss',
         'vtsls',
         'vue-language-server',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      require('mason-lspconfig').setup {
-        ensure_installed = {}, -- List of servers to automatically install
-        automatic_enable = true, -- Automatically enable installed servers via vim.lsp.enable()
-      }
-
-      -- Configure individual servers using vim.lsp.config() instead of handlers
-      -- This replaces the old handlers pattern
+      for server_name, config in pairs(servers) do
+        vim.lsp.config(server_name, config)
+      end
     end,
   },
 }
