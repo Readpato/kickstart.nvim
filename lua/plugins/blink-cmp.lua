@@ -79,6 +79,41 @@ return { -- Autocompletion
       providers = {
         lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
       },
+      -- lsp = {
+      --   ---@type fun(ctx: blink.cmp.Context, items: blink.cmp.CompletionItem[])
+      --   transform_items = function(ctx, items)
+      --     ---@diagnostic disable-next-line: redundant-return-value
+      --     return vim.tbl_filter(function(item)
+      --       local c = ctx.get_cursor()
+      --       local cursor_line = ctx.line
+      --       local cursor = {
+      --         row = c[1],
+      --         col = c[2] + 1,
+      --         line = c[1] - 1,
+      --       }
+      --       local cursor_before_line = string.sub(cursor_line, 1, cursor.col - 1)
+      --       -- remove text
+      --       if item.kind == vim.lsp.protocol.CompletionItemKind.Text then
+      --         return false
+      --       end
+      --
+      --       if vim.bo.filetype == 'vue' then
+      --         -- For events
+      --         if cursor_before_line:match '(@[%w]*)%s*$' ~= nil then
+      --           return item.label:match '^@' ~= nil
+      --           -- For props also exclude events with `:on-` prefix
+      --         elseif cursor_before_line:match '(:[%w]*)%s*$' ~= nil then
+      --           return item.label:match '^:' ~= nil and not item.label:match '^:on%-' ~= nil
+      --           -- For slot
+      --         elseif cursor_before_line:match '(#[%w]*)%s*$' ~= nil then
+      --           return item.kind == vim.lsp.protocol.CompletionItemKind.Method
+      --         end
+      --       end
+      --
+      --       return true
+      --     end, items)
+      --   end,
+      -- },
     },
 
     snippets = { preset = 'luasnip' },
