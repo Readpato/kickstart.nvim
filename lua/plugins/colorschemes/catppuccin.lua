@@ -4,7 +4,7 @@ return {
   name = 'catppuccin',
   priority = 1000,
   config = function()
-    local variant = 'gruvbox'
+    local variant = 'default'
 
     if variant == 'gruvbox' then
       -- Gruvbox-style catppuccin config (complete version)
