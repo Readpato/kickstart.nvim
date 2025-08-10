@@ -1,18 +1,6 @@
 -- LSP Plugins
 return {
   {
-    -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-    -- used for completion, annotations and signatures of Neovim apis
-    'folke/lazydev.nvim',
-    ft = 'lua',
-    opts = {
-      library = {
-        -- Load luvit types when the `vim.uv` word is found
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-      },
-    },
-  },
-  {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     event = 'VeryLazy',
@@ -39,21 +27,6 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          -- Rename the variable under your cursor.
-          --  Most Language Servers support renaming across files, etc.
-          map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
-
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          -- or a suggestion from your LSP for this to activate.
-          map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
-
-          -- Find references for the word under your cursor.
-          map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
@@ -62,10 +35,6 @@ return {
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
-          -- Fuzzy find all the symbols in your current document.
-          --  Symbols are things like variables, functions, types, etc.
-          map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
@@ -191,6 +160,7 @@ return {
       }
       local servers = {
         vue_ls = {},
+        gopls = {},
         vtsls = {
           settings = {
             vtsls = {
@@ -249,6 +219,7 @@ return {
         'tailwindcss',
         'vtsls',
         'vue-language-server',
+        'gopls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
